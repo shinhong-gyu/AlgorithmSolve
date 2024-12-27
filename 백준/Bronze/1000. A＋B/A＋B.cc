@@ -1,9 +1,8 @@
-#include <stdio.h>
+#include <iostream>
 
-int main(void){
+int main()
+{
     int a,b;
-    scanf("%d",&a);
-    scanf("%d",&b);
-    printf("%d",a+b);
-    return 0;
+    std::cin>> a >> b;
+    std::cout << a+b << std::endl;
 }
