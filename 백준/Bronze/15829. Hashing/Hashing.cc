@@ -1,27 +1,24 @@
 #include <iostream>
-#include "cmath"
-
+#include <cmath>
 using namespace std;
 
-int main()
-{
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+string str;
+char a; // 주어진 문자
+long long M = 1234567891; // 서로소 M
+int main(){
+    int L;
+    long long hash = 0;
+    scanf("%d",&L);
+    cin >> str;
 
-	int M = 1234567891;
-	int r = 31;
-	long long hash = 0;
-	int N;
-	cin >> N;
+    long long r = 1;
+    for(int i=0; i<L; i++){
+        a = str[i];
+        hash = (hash + (a - 96) * r) % M; // (a * r) mod M
+        r = (r * 31) % M; // pow(r, n); -> 값이 너무 커지니까 계속 mod M 해준다.
+    }
 
-	char* s = new char[N + 1];
+    printf("%lld\n", hash);
 
-	cin >> s;
-
-	for (int i = 0; i < N; i++)
-	{
-		hash += (s[i] - 'a' + 1) * pow(r, i);
-	}
-	cout << hash << endl;
+    return 0;
 }
