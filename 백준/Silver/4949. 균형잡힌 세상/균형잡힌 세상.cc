@@ -63,12 +63,8 @@ int main()
 			}
 		}
 
-		if (!parentheses.empty())
-		{
-			isBalanced = false;
-		}
 
-		if (isBalanced)
+		if (isBalanced && parentheses.empty())
 		{
 			cout << "yes" << endl;
 		}
