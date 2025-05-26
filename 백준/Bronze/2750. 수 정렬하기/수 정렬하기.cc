@@ -1,28 +1,35 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
-
 
 using namespace std;
 
 int main()
 {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+    int N = 0;
+    cin >> N;
+    vector<int> lst(N, 0);
 
-	int N;
-	cin >> N;
+    for (int i = 0; i < N; ++i)
+    {
+        cin >> lst[i];
+    }
 
-	vector<int> v(N);
-	for (int i = 0; i < N; i++)
-	{
-		cin >> v[i];
-	}
-	sort(v.begin(), v.end());
+    for (int i = 0; i < N - 1; ++i)
+    {
+        for (int j = 0; j < N - i - 1; ++j)
+        {
+            if (lst[j] > lst[j + 1])
+            {
+                int temp = lst[j + 1];
+                lst[j + 1] = lst[j];
+                lst[j] = temp;
+            }
+        }
+    }
 
-	for (int i = 0; i < N; i++)
-	{
-		cout << v[i] << endl;;
-	}
+    for (int num : lst)
+    {
+        cout << num << "\n";
+    }
+    return (0);
 }
