@@ -1,60 +1,67 @@
 #include <iostream>
-#include <climits>
-using namespace std;
+#include <vector>
+#include <cmath>
 
-int Height[501][501];
+using namespace std;
 
 int main()
 {
 	ios::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
 	int N, M, B;
 	cin >> N >> M >> B;
-	for (int i = 0; i < N; ++i)
+
+	vector<vector<int>> ground(N + 1, vector<int>(M + 1));
+
+	for (int i = 0; i < N; i++)
 	{
-		for (int j = 0; j < M; ++j)
+		for (int j = 0; j < M; j++)
 		{
-			cin >> Height[i][j];
+			cin >> ground[i][j];
 		}
 	}
 
-	int MinTime = INT_MAX;
-	int SolutionHeight = 0;
-	for (int TargetHeight = 0; TargetHeight < 257; ++TargetHeight)
+	int minTime = 2147483647;
+	int minHeight = 0;
+	for (int targetHeight = 0; targetHeight < 257; targetHeight++)
 	{
-		int Time = 0;
-		int Blocks = B;
+		int time = 0;
+		int block = B;
 
-		for (int i = 0; i < N; ++i)
+		for (int i = 0; i < N; i++)
 		{
-			for (int j = 0; j < M; ++j)
+			for (int j = 0; j < M; j++)
 			{
-				int CurrentHeight = Height[i][j];
-				if (CurrentHeight > TargetHeight)
+				int curHeight = ground[i][j];
+				if (curHeight < targetHeight)
 				{
-					Blocks += (CurrentHeight - TargetHeight);
-					Time += (CurrentHeight - TargetHeight) * 2;
+					int gap = targetHeight - curHeight;
+					block -= gap;
+					time += gap;
 				}
-				else if (CurrentHeight < TargetHeight)
+				else if (curHeight > targetHeight)
 				{
-					Blocks -= (TargetHeight - CurrentHeight);
-					Time += (TargetHeight - CurrentHeight);
+					int gap = curHeight - targetHeight;
+
+					time += gap * 2;
+					block += gap;
 				}
 			}
 		}
 
-		if (Blocks < 0)
+		if (block < 0)
 		{
 			continue;
 		}
 
-		if (Time <= MinTime)
+		if (time <= minTime)
 		{
-			MinTime = Time;
-			SolutionHeight = TargetHeight;
+			minTime = time;
+			minHeight = targetHeight;
 		}
 	}
 
-	cout << MinTime << ' ' << SolutionHeight;
+	cout << minTime << " " << minHeight;
 }
