@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -10,20 +9,22 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int N,count;
+	int N;
 	cin >> N;
 
-	int cnt[10001] = {0};
+	int arr[10001] = { 0 };
+
+	int temp;
 
 	for (int i = 0; i < N; i++)
 	{
-		cin >> count;
-		cnt[count]++;
+		cin >> temp;
+		arr[temp]++;
 	}
 
 	for (int i = 0; i < 10001; i++)
 	{
-		for (int j = 0; j < cnt[i]; j++)
+		for (int j = 0; j < arr[i]; j++)
 		{
 			cout << i << "\n";
 		}
