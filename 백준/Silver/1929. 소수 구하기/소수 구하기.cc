@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <cmath>
 
 using namespace std;
 
@@ -14,27 +12,26 @@ int main()
 	int N, M;
 	cin >> N >> M;
 
-	vector<bool> prime(M + 1, true);
+	vector<bool> isPrime(M + 1, false);
+	vector<bool> isModified(M + 1, false);
 
-	prime[0] = false;
-	prime[1] = false;
-
-	for (int i = 2; i <= sqrt(M); i++)
+	for (int i = 2; i <= M; i++)
 	{
-		if (prime[i] == true)
+		if (isPrime[i] == false && isModified[i] == false)
 		{
-			for (int j = 2; j * i <= M; j++)
+			isPrime[i] = true;
+			for (int j = i + i; j <= M; j += i)
 			{
-				prime[i * j] = false;
+				isModified[j] = true;
 			}
 		}
 	}
+
 	for (int i = N; i <= M; i++)
 	{
-		if (prime[i] == true)
+		if (isPrime[i] == true)
 		{
-			cout << i << "\n";
+			cout << i << '\n';
 		}
 	}
-
 }
