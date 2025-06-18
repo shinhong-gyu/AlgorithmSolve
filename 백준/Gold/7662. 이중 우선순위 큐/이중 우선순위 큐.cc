@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <queue>
 #include <map>
 
+
 using namespace std;
+
 
 int main()
 {
@@ -17,75 +20,79 @@ int main()
 	while (T--)
 	{
 		int K;
+
 		cin >> K;
 
-		priority_queue<int> max_pq;
-		priority_queue<int, vector<int>, greater<int>> min_pq; 
-		map<int, int> counts; 
+		priority_queue<int> maxpq;
+		priority_queue<int, vector<int>, greater<int>> minpq;
+		map<int, int> m;
 
-		for (int i = 0; i < K; i++) 
+		for (int i = 0; i < K; i++)
 		{
 			char oper;
 			int n;
+
 			cin >> oper >> n;
 
 			if (oper == 'I')
 			{
-				max_pq.push(n);
-				min_pq.push(n);
-				counts[n]++; 
+				minpq.push(n);
+				maxpq.push(n);
+				m[n]++;
 			}
-			else 
+			else
 			{
-				if (counts.empty())
+				if (m.empty())
 				{
 					continue;
 				}
 
-				if (n == 1) 
-				{ 
-					while (!max_pq.empty() && counts[max_pq.top()] == 0) 
+
+				if (n == -1)
+				{
+					while (!minpq.empty() && m[minpq.top()] == 0)
 					{
-						max_pq.pop();
+						minpq.pop();
 					}
-					if (!max_pq.empty()) {
-						counts[max_pq.top()]--;
-						max_pq.pop();
+					if (!minpq.empty())
+					{
+						m[minpq.top()]--;
+						minpq.pop();
 					}
 				}
-				else 
+				else
 				{
-					while (!min_pq.empty() && counts[min_pq.top()] == 0) 
+					while (!maxpq.empty() && m[maxpq.top()] == 0)
 					{
-						min_pq.pop();
+						maxpq.pop();
 					}
-					if (!min_pq.empty()) 
+					if (!maxpq.empty())
 					{
-						counts[min_pq.top()]--;
-						min_pq.pop();
+						m[maxpq.top()]--;
+						maxpq.pop();
 					}
 				}
 			}
 		}
 
-		while (!max_pq.empty() && counts[max_pq.top()] == 0) 
+		while (!minpq.empty() && m[minpq.top()] == 0)
 		{
-			max_pq.pop();
-		}
-		while (!min_pq.empty() && counts[min_pq.top()] == 0) 
-		{
-			min_pq.pop();
+			minpq.pop();
 		}
 
-		if (max_pq.empty() || min_pq.empty())
+		while (!maxpq.empty() && m[maxpq.top()] == 0)
+		{
+			maxpq.pop();
+		}
+
+		if (minpq.empty() || maxpq.empty())
 		{
 			cout << "EMPTY" << '\n';
+			continue;
 		}
-		else
-		{
-			cout << max_pq.top() << ' ' << min_pq.top() << '\n';
-		}
-	}
 
-	return 0;
+		cout << maxpq.top() << ' ' << minpq.top() << '\n';
+	}
 }
+
+
