@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool dp[55501];
+bool dp[40001];
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
 	for (int i = 1; i < N; i++)
 	{
 		unordered_set<int> canCheck;
-		for (int k = 1; k < 55001; k++)
+		for (int k = 1; k < 40001; k++)
 		{
 			if (dp[k])
 			{
