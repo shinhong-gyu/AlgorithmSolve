@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm> // max 함수를 사용하기 위해 추가
 
 using namespace std;
 
@@ -46,11 +45,12 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+
 	cin >> N >> W;
 
-	for (int i = 0; i <= N; i++)
+	for (int i = 1; i <= N; i++)
 	{
-		for (int j = 0; j <= 2; j++)
+		for (int j = 1; j <= 2; j++)
 		{
 			for (int k = 0; k <= W; k++)
 			{
@@ -63,16 +63,8 @@ int main()
 	{
 		cin >> record[i];
 	}
-    
-    // 1번 위치에서 시작하는 경우
-    int result1 = solve(1, 1, 0);
 
-    // 2번 위치에서 시작하는 경우 (이동 횟수 1 소모)
-    int result2 = 0;
-    if (W > 0) 
-    {
-        result2 = solve(1, 2, 1);
-    }
-    
-	cout << max(result1, result2);
+
+
+	cout << max(solve(1, 1, 0), solve(1, 2, 1));
 }
