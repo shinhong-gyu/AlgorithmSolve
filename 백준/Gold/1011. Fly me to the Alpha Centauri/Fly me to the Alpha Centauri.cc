@@ -41,7 +41,7 @@ int main()
 		{
 			count += 2 * n;
 		}
-		else if (n * n + n < dist && dist <= (n + 1) * (n + 1))
+		else if (n * n + n < dist && dist < (n + 1) * (n + 1))
 		{
 			count += 2 * n + 1;
 		}
