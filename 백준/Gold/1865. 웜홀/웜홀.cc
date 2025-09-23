@@ -3,11 +3,11 @@
 #include <tuple>
 #include <climits>
 
-#define INF INT_MAX
 
 using namespace std;
 
 typedef tuple<int, int, int> Edge;
+const int INF = 1e9;
 
 int main()
 {
@@ -72,25 +72,16 @@ int main()
 			}
 		}
 
-		for (int i = 0; i < N - 1; i++)
+		for (auto edge : edges)
 		{
-			for (auto edge : edges)
-			{
-				int s = get<0>(edge);
-				int e = get<1>(edge);
-				int c = get<2>(edge);
+			int s = get<0>(edge);
+			int e = get<1>(edge);
+			int c = get<2>(edge);
 
-				if (D[s] != INF)
-				{
-					if (D[e] > D[s] + c)
-					{
-						update = true;
-						break;
-					}
-				}
-			}
-			if (update)
+
+			if (D[e] > D[s] + c)
 			{
+				update = true;
 				break;
 			}
 		}
