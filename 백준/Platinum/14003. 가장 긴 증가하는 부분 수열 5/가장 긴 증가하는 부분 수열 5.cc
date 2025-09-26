@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <algorithm>
 
 using namespace std;
+
 
 
 int main()
@@ -21,44 +22,77 @@ int main()
 		cin >> num[i];
 	}
 
-	vector<int> lis;
-	vector<int> pos(N);
+	// dp[i] : 0~i까지 i를 포함하는 가장 길게 증가하는 수열의 길이
+	vector<int> dp(N);
+	vector<int> seq;
 
-	lis.push_back(num[0]);
-	pos[0] = 0;
+	dp[0] = 1;
+	seq.push_back(num[0]);
 
 	for (int i = 1; i < N; i++)
 	{
-		if (num[i] > lis[lis.size() - 1])
+		int cur = num[i];
+
+		if (cur > seq.back())
 		{
-			pos[i] = lis.size();
-			lis.push_back(num[i]);
+			seq.push_back(cur);
+			dp[i] = seq.size();
 		}
 		else
 		{
-			vector<int>::iterator iter = lower_bound(lis.begin(), lis.end(), num[i]);
+			// seq에서 cur보다 같거나 큰 수 중 제일 작은 값 찾기
+			int s = 0;
+			int e = seq.size() - 1;
 
-			pos[i] = iter - lis.begin();
+			int idx = i;
 
-			*iter = num[i];
+			while (s <= e)
+			{
+				int mid = (s + e) / 2;
+
+				if (seq[mid] > cur)
+				{
+					idx = mid;
+					e = mid - 1;
+				}
+				else if (seq[mid] < cur)
+				{
+					s = mid + 1;
+				}
+				else
+				{
+					idx = mid;
+
+					while (idx != 0 && seq[idx - 1] == cur)
+					{
+						idx--;
+					}
+
+					break;
+				}
+			}
+
+			seq[idx] = cur;
+			dp[i] = idx + 1;
 		}
 	}
 
-	cout << lis.size() << endl;
+	int len = *max_element(dp.begin(), dp.end());
 
-	vector<int> rlis;
+	cout << len << "\n";
 
-	int search = lis.size() - 1;
+	vector<int> lis;
+
 	for (int i = N - 1; i >= 0; i--)
 	{
-		if (pos[i] == search)
+		if (dp[i] == len)
 		{
-			rlis.push_back(num[i]);
-			search--;
+			lis.push_back(num[i]);
+			len--;
 		}
 	}
 
-	for (auto iter = rlis.rbegin(); iter < rlis.rend(); iter++)
+	for (auto iter = lis.rbegin(); iter < lis.rend(); iter++)
 	{
 		cout << *iter << " ";
 	}
