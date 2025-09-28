@@ -82,10 +82,10 @@ struct Segment
 
 		// AB에 대해서 C,D가 왼쪽 오른쪽에 있으면서 CD에 대해서 A,B가 왼쪽 오른쪽에 있으면 교차
 
-		int ABC = *this * s.A;
-		int ABD = *this * s.B;
-
 		Segment AB = { this->A,this->B };
+
+		int ABC = AB * s.A;
+		int ABD = AB * s.B;
 
 		int CDA = s * AB.A;
 		int CDB = s * AB.B;
@@ -96,20 +96,10 @@ struct Segment
 		}
 
 		// CD 오/왼에 A,B가 있을 때
-		if ((CDA > 0 && CDB < 0) || (CDA < 0 && CDB >0))
+		if (CDA*CDB < 0)
 		{
 			// C,D 도 AB의 왼쪽/오른쪽에 있다면 교차
-			if ((ABC > 0 && ABD < 0) || (ABC < 0 && ABD > 0))
-			{
-				return true;
-			}
-		}
-
-		// AB 오/왼에 C,D가 있을 때
-		if ((ABC > 0 && ABD < 0) || (ABC < 0 && ABD > 0))
-		{
-			// A,B 도 CD의 왼쪽/오른쪽에 있다면 교차
-			if ((CDA > 0 && CDB < 0) || (CDA < 0 && CDB >0))
+			if (ABC *ABD<0)
 			{
 				return true;
 			}
