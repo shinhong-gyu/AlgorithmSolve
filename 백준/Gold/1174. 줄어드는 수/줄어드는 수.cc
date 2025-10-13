@@ -18,11 +18,6 @@ void solve()
 {
 	if (cur.length() >= 1)
 	{
-		if (stoull(cur) > maxDecs)
-		{
-			return;
-		}
-
 		for (int i = 0; i <= 9; i++)
 		{
 			if (cur.back() - '0' > i)
