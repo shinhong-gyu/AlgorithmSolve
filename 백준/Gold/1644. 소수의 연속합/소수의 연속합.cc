@@ -44,39 +44,54 @@ int main()
 
 		int count = 0;
 
+		int sum = Primes[p1];
+
 		while (p1 <= Primes.size() - 1 && p2 <= Primes.size() - 1 && p1 <= p2)
 		{
 			if (p1 == p2)
 			{
-				if (Primes[p1] == N)
-				{
-					count++;
-
-				}
-				p2++;
-			}
-			else
-			{
-				int sum = 0;
-
-				for (int i = p1; i <= p2; i++)
-				{
-					sum += Primes[i];
-				}
-
 				if (sum == N)
 				{
 					count++;
+				}
+
+				p2++;
+
+				if (p2 <= Primes.size() - 1)
+				{
+					sum += Primes[p2];
+				}
+			}
+			else
+			{
+				if (sum == N)
+				{
+					count++;
+
+					sum -= Primes[p1];
+
 					p1++;
 					p2++;
+
+					if (p2 <= Primes.size() - 1)
+					{
+						sum += Primes[p2];
+					}
 				}
 				else if (sum > N)
 				{
+					sum -= Primes[p1];
+
 					p1++;
 				}
 				else
 				{
 					p2++;
+
+					if (p2 <= Primes.size() - 1)
+					{
+						sum += Primes[p2];
+					}
 				}
 			}
 		}
