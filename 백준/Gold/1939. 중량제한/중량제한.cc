@@ -1,101 +1,98 @@
 #include <iostream>
 #include <vector>
-#include <tuple>
-#include <map>
-#include <queue>
+#include <numeric>
+#include <algorithm>
 
 using namespace std;
 
-
-int A, B;
-int N, M;
-
-int maxWeight = -1;
-
-vector<tuple<int, int, int>> bridges;
-
-bool Check(int mid)
+class Union
 {
-	vector<vector<int>> edges(N + 1, vector<int>());
-
-	for (int i = 0; i < M; i++)
+public:
+	Union(int n)
 	{
-		int cost = get<0>(bridges[i]);
-		if (cost >= mid)
+		parent.resize(n);
+
+		iota(parent.begin(), parent.end(), 0);
+	}
+
+	int Find(int n)
+	{
+		if (n == parent[n])
 		{
-			int x = get<1>(bridges[i]);
-			int y = get<2>(bridges[i]);
-			edges[x].push_back(y);
-			edges[y].push_back(x);
+			return n;
+		}
+
+		return parent[n] = Find(parent[n]);
+	}
+
+	void SetUnion(int i, int j)
+	{
+		int root_i = Find(i);
+		int root_j = Find(j);
+
+		if (root_i != root_j)
+		{
+			parent[root_j] = root_i;
 		}
 	}
 
-
-	vector<bool> visited(N + 1, false);
-
-	queue<int> q;
-
-	q.push(A);
-	visited[A] = true;
-
-	while (!q.empty())
+	bool IsUnion(int i, int j)
 	{
-		int cur = q.front();
-
-		q.pop();
-
-		if (cur == B)
-		{
-			return true;
-		}
-
-		for (int n : edges[cur])
-		{
-			if (!visited[n])
-			{
-				q.push(n);
-				visited[n] = true;
-			}
-		}
+		return Find(i) == Find(j);
 	}
 
-	return false;
+	vector<int> parent;
+};
+
+struct Info
+{
+	int a, b, c;
+};
+
+bool Compare(const Info& i1, const Info& i2)
+{
+	return i1.c > i2.c;
 }
-
 
 int main()
 {
-	cin.tie(NULL);
 	ios::sync_with_stdio(false);
+	cin.tie(NULL);
 
+	int N, M;
 	cin >> N >> M;
 
+	vector<Info> bridges(M);
+
+	int maxWeight = -1;
 	for (int i = 0; i < M; i++)
 	{
 		int a, b, c;
 		cin >> a >> b >> c;
 
-		bridges.push_back({ c,a,b });
+		bridges[i] = { a,b,c };
 
 		maxWeight = max(c, maxWeight);
 	}
 
-	cin >> A >> B;
+	sort(bridges.begin(), bridges.end(), Compare);
 
-	int low = 1, high = maxWeight;
-	int answer = -1;
-	while (low <= high)
+	int to, from;
+	cin >> to >> from;
+
+	Union uf(N + 1);
+
+	int answer;
+	for (int i = 0; i < M; i++)
 	{
-		int mid = (low + high) / 2;
+		const Info& info = bridges[i];
 
-		if (Check(mid))
+		uf.SetUnion(info.a, info.b);
+
+		if (uf.IsUnion(to, from))
 		{
-			answer = max(answer, mid);
-			low = mid + 1;
-		}
-		else
-		{
-			high = mid - 1;
+			answer = info.c;
+			break;
 		}
 	}
 
